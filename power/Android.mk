@@ -1,33 +1,30 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 LOCAL_PATH:= $(call my-dir)
-# HAL module implemenation stored in
-# hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.board.platform>.so
+
 include $(CLEAR_VARS)
-
-ifneq ($(filter lux surnia, $(TARGET_DEVICE)),)
-LOCAL_SRC_FILES := lights.c
-else ifneq ($(filter merlin osprey, $(TARGET_DEVICE)),)
-LOCAL_SRC_FILES := lights_osprey.c
+LOCAL_C_INCLUDES := $(TARGET_POWERHAL_HEADER_PATH)
+ifeq ($(filter lux merlin,$(TARGET_DEVICE)),)
+LOCAL_SRC_FILES := power.c
+else
+LOCAL_SRC_FILES := power_8939.c
 endif
-
-LOCAL_CLANG := true
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-LOCAL_SHARED_LIBRARIES := liblog
-LOCAL_MODULE := lights.$(TARGET_BOARD_PLATFORM)
+LOCAL_SHARED_LIBRARIES := liblog libcutils
+LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS := optional
-
+LOCAL_MODULE := power.msm8916
 include $(BUILD_SHARED_LIBRARY)
