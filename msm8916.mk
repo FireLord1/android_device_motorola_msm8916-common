@@ -82,11 +82,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     camera.msm8916 \
     libbson \
+    libshim_camera \
     Snap
 
 # CMActions
 PRODUCT_PACKAGES += \
-    CMActions
+    Actions
 
 # Display
 PRODUCT_PACKAGES += \
@@ -174,7 +175,6 @@ PRODUCT_COPY_FILES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-    dhcpcd.conf \
     hostapd_default.conf \
     hostapd \
     wpa_supplicant \
