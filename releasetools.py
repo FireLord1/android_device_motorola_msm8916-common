@@ -1,4 +1,3 @@
-
 # Copyright (C) 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := $(call my-dir)
+def FullOTA_InstallEnd(info):
+  ExtractFirmwares(info)
 
-# Camera
-include $(CLEAR_VARS)
-LOCAL_SRC_FILES := \
-    SensorManager.cpp \
-    moto_camera_misc.c
-
-LOCAL_SHARED_LIBRARIES := libutils libgui liblog libbinder
-LOCAL_MODULE := libshim_camera
-LOCAL_MODULE_TAGS := optional
-include $(BUILD_SHARED_LIBRARY)
-
-include $(CLEAR_VARS)
-
-LOCAL_SRC_FILES := wvm.c
-
-LOCAL_SHARED_LIBRARIES := libstagefright_foundation
-
-LOCAL_MODULE := libshims_wvm
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_SHARED_LIBRARY)
+def ExtractFirmwares(info):
+  info.script.Mount("/system")
+  info.script.AppendExtra('mount("ext4", "EMMC", "/dev/block/bootdevice/by-name/modem", "/firmware", "");')
+  info.script.AppendExtra('ui_print("Extracting modem firmware");')
+  info.script.AppendExtra('run_program("/sbin/sh", "/tmp/install/bin/extract_firmware.sh");')
+  info.script.AppendExtra('ui_print("Firmware extracted");')
+  info.script.AppendExtra('unmount("/firmware");')
+  info.script.Unmount("/system")

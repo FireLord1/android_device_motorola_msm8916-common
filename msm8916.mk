@@ -82,7 +82,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     camera.msm8916 \
     libbson \
-    libshim_camera \
     Snap
 
 # CMActions
@@ -102,9 +101,11 @@ PRODUCT_PACKAGES += \
     ethertypes \
     libebtc
 
-# DRM
-PRODUCT_PACKAGES += \
-    libshims_wvm
+# Firmware Extraction
+ifeq ($(filter surnia,$(TARGET_DEVICE)),)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/extract_firmware.sh:install/bin/extract_firmware.sh
+endif
 
 # FM
 PRODUCT_PACKAGES += \
